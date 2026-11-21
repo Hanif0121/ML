@@ -1,0 +1,49 @@
+{
+  "model": "K-Means (k=4) + StandardScaler",
+  "file_model": "model_segmentasi_umkm.joblib",
+  "tanggal_pelatihan": "ISI_TANGGAL_MENJALANKAN_NOTEBOOK",
+  "versi_library": {"scikit-learn": "1.6.1"},
+  "fitur": [
+    "jumlah_transaksi_6bln (log1p)",
+    "hari_sejak_transaksi_terakhir (log1p)",
+    "persen_pakai_promo",
+    "rata_belanja_per_transaksi (log1p)"
+  ],
+  "parameter": {"n_clusters": 4, "random_state": 42, "n_init": 10},
+  "data": {"mentah": 10150, "bersih": 10000, "duplikat_dibuang": 150},
+  "pembagian_data": {"train": 7000, "validation": 1500, "test": 1500},
+  "pemilihan_k": {
+    "metrik": "silhouette pada data validation",
+    "silhouette_validation_per_k": {"2": 0.4292, "3": 0.5045, "4": 0.6037, "5": 0.5186, "6": 0.4113, "7": 0.3682},
+    "k_terpilih": 4,
+    "alasan": "silhouette tertinggi, dan keempat segmen terbaca jelas oleh pemilik usaha (terkecil 15% pelanggan)"
+  },
+  "metrik_test": {
+    "silhouette": 0.6075,
+    "calinski_harabasz": 2473.36,
+    "davies_bouldin": 0.5586,
+    "catatan": "dihitung dari model yang dilatih hanya pada data train (7.000 baris)"
+  },
+  "model_tersimpan": {
+    "dilatih_pada": "seluruh 10.000 data bersih",
+    "silhouette_seluruh_data": 0.6125
+  },
+  "baseline": {
+    "model": "K-Means, 11 fitur (25 kolom setelah encoding)",
+    "silhouette_validation": 0.2350,
+    "catatan": "dihitung di 25 kolom, sedangkan model final di 4 kolom, sehingga skor tidak langsung sebanding"
+  },
+  "segmen": {
+    "1. Pelanggan Setia Harian": 3019,
+    "2. Pembeli Borongan & Acara": 1501,
+    "3. Pemburu Promo Online": 2499,
+    "4. Pelanggan Mulai Menghilang": 2981
+  },
+  "label_klaster_ke_segmen": {
+    "0": "3. Pemburu Promo Online",
+    "1": "4. Pelanggan Mulai Menghilang",
+    "2": "1. Pelanggan Setia Harian",
+    "3": "2. Pembeli Borongan & Acara"
+  },
+  "catatan": "Model tidak memakai kategori_favorit dan channel_utama; keduanya hanya dipakai untuk saran saluran dan produk pengiriman."
+}

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kafe. — Ringkasan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="logo" href="#">Kafe<span>.</span></a>
+      <nav class="tabs" id="tabs">
+        <button class="tab is-active" data-tab="ringkasan">Ringkasan</button>
+        <button class="tab" data-tab="pelanggan">Pelanggan</button>
+        <button class="tab" data-tab="pesanan">Pesanan</button>
+        <button class="tab" data-tab="menu">Menu</button>
+        <button class="tab" data-tab="promo">Promo</button>
+      </nav>
+      <p class="asof">Data 6 bulan terakhir, per <strong>31 Mei 2026</strong></p>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <div class="filters" id="filterBar"></div>
+
+    <!-- ===== RINGKASAN ===== -->
+    <section class="view is-active" id="view-ringkasan">
+
+      <div class="top-grid">
+        <article class="hero">
+          <h1><span id="riskCount">2.140</span> pelanggan mulai menghilang</h1>
+          <p class="hero__text">
+            Sudah lebih dari 60 hari mereka tidak transaksi. Kirim voucher
+            sebelum mereka pindah ke tempat lain.
+          </p>
+
+          <div class="bar" id="bar" role="img" aria-label="Distribusi pelanggan berdasarkan hari sejak transaksi terakhir"></div>
+          <div class="bar-labels" id="barLabels"></div>
+
+          <button class="btn" id="riskBtn">Lihat pelanggan berisiko</button>
+        </article>
+
+        <aside class="kpis" id="kpis"></aside>
+      </div>
+
+      <div class="trend panel" id="trend"></div>
+
+      <section class="segments">
+        <h2>Segmen pelanggan <small>klik untuk melihat daftarnya</small></h2>
+        <div class="segments__grid" id="segmentCards"></div>
+
+        <div class="list" id="list" hidden>
+          <div class="list__head">
+            <h3 id="listTitle"></h3>
+            <button class="link" id="listClose">Tutup</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Pelanggan</th>
+                  <th>Transaksi terakhir</th>
+                  <th class="num">Total belanja</th>
+                  <th class="num">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="listBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ===== PELANGGAN: cek segmen (terhubung ke model lewat /api/prediksi) ===== -->
+    <section class="view" id="view-pelanggan">
+      <div class="cek">
+
+        <form class="cek__form" id="cekForm" novalidate>
+          <h2>Cek segmen pelanggan</h2>
+          <p class="cek__intro">
+            Isi data satu pelanggan, lalu lihat segmennya dan promo yang cocok untuknya.
+          </p>
+
+          <div class="cek__grid">
+            <label class="field field--full">
+              <span>ID pelanggan <em>opsional</em></span>
+              <input type="text" name="id_pelanggan" maxlength="40" placeholder="PLG-10001" autocomplete="off" />
+            </label>
+
+            <label class="field">
+              <span>Jumlah transaksi (6 bulan)</span>
+              <input type="number" name="jumlah_transaksi_6bln" min="1" max="1000" step="1" inputmode="numeric" placeholder="mis. 12" required />
+            </label>
+
+            <label class="field">
+              <span>Total belanja (Rp)</span>
+              <input type="text" name="total_belanja_rp" inputmode="numeric" placeholder="mis. 360.000" autocomplete="off" required />
+            </label>
+
+            <label class="field">
+              <span>Hari sejak transaksi terakhir</span>
+              <input type="number" name="hari_sejak_transaksi_terakhir" min="0" max="3650" step="1" inputmode="numeric" placeholder="mis. 9" required />
+            </label>
+
+            <label class="field">
+              <span>Transaksi pakai promo (%)</span>
+              <input type="number" name="persen_pakai_promo" min="0" max="100" step="1" inputmode="numeric" placeholder="mis. 40" required />
+            </label>
+
+            <label class="field">
+              <span>Kategori favorit</span>
+              <select name="kategori_favorit">
+                <option value="kopi">Kopi</option>
+                <option value="roti">Roti</option>
+                <option value="kue_ulang_tahun">Kue ulang tahun</option>
+                <option value="paket_snack">Paket snack</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Channel utama</span>
+              <select name="channel_utama">
+                <option value="toko">Toko</option>
+                <option value="gofood">GoFood</option>
+                <option value="grabfood">GrabFood</option>
+                <option value="shopeefood">ShopeeFood</option>
+              </select>
+            </label>
+          </div>
+
+          <p class="cek__error" id="cekError" role="alert" hidden></p>
+          <button class="btn" type="submit" id="cekBtn">Analisis pelanggan</button>
+        </form>
+
+        <aside class="cek__result" id="cekResult" aria-live="polite">
+          <p class="cek__placeholder">Hasil analisis akan muncul di sini.</p>
+        </aside>
+
+      </div>
+    </section>
+
+    <!-- Pesanan, Menu, Promo: isinya dibuat oleh js/script.js dari data pelanggan -->
+    <section class="view" id="view-pesanan"></section>
+    <section class="view" id="view-menu"></section>
+    <section class="view" id="view-promo"></section>
+
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/pelanggan.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

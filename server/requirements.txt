@@ -1,0 +1,5 @@
+flask>=3.0
+scikit-learn==1.6.1   # harus sama dengan versi saat model dilatih
+joblib
+numpy
+pandas
